@@ -5,8 +5,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <!--#if (rabbitpub || rabbitsub) -->
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.12.0" />
+    <!--#endif -->
   </ItemGroup>
   <ItemGroup>
+    <!--#if (rabbitpub) -->
+    <ProjectReference Include="..\..\contract\Lykke.LykkeType.LykkeService.Contract\Lykke.LykkeType.LykkeService.Contract.csproj" />
+    <!--#endif -->
     <ProjectReference Include="..\Lykke.LykkeType.LykkeService.Domain\Lykke.LykkeType.LykkeService.Domain.csproj" />
   </ItemGroup>
 </Project>

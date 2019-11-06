@@ -148,21 +148,23 @@
           ]
         },
         {
-          "condition": "(!(rabbitsub || azurequeuesub))",
-          "exclude": [ 
-              "src/Lykke.Job.LykkeService/IncomingMessages/*.*"
-          ]
-        },
-        {
           "condition": "(serviceType == 'Job' && !(rabbitsub || rabbitpub))",
           "exclude": [ 
-              "src/Lykke.Job.LykkeService/Settings/JobSettings/RabbitMqSettings.cs"
+              "src/Lykke.Job.LykkeService/Settings/JobSettings/RabbitMqSettings.cs",
+              "src/Lykke.Job.LykkeService/Modules/RabbitMqModule.cs"
           ]
         },
         {
           "condition": "(serviceType == 'Job' && !rabbitpub)",
           "exclude": [ 
               "contract/Lykke.Job.LykkeService.Contract/**/*"
+          ]
+        },
+        {
+          "condition": "(serviceType == 'Service' && !(rabbitsub || rabbitpub))",
+          "exclude": [ 
+              "src/Lykke.Service.LykkeService/Settings/RabbitMqSettings.cs",
+              "src/Lykke.Service.LykkeService/Modules/RabbitMqModule.cs"
           ]
         },
         {
@@ -174,14 +176,7 @@
         {
           "condition": "(!rabbitsub)",
           "exclude": [ 
-              "src/Lykke.Job.LykkeService/RabbitSubscribers/*.*"
-          ]
-        },
-        {
-          "condition": "(!rabbitpub)",
-          "exclude": [ 
-              "src/Lykke.Job.LykkeService/RabbitPublishers/*.*",
-              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs"
+              "src/Lykke.LykkeType.LykkeService.DomainServices/RabbitSubscribers/*.*"
           ]
         },
         {
@@ -204,7 +199,6 @@
         {
           "condition": "(serviceType == 'Service')",
           "exclude": [ 
-              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
               "contract/Lykke.Job.LykkeService.Contract/**/*",
               "src/Lykke.Job.LykkeService/**/*"
           ]

@@ -1,6 +1,6 @@
 ﻿using Lykke.SettingsReader.Attributes;
 
-namespace Lykke.Job.LykkeService.Settings.JobSettings
+namespace Lykke.Service.LykkeService.Settings
 {
     public class RabbitMqSettings
     {

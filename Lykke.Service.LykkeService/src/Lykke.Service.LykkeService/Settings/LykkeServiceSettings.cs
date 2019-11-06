@@ -7,5 +7,9 @@ namespace Lykke.Service.LykkeService.Settings
     public class LykkeServiceSettings
     {
         public DbSettings Db { get; set; }
+#if (rabbitsub || rabbitpub)
+
+        public RabbitMqSettings Rabbit { get; set; }
+#endif
     }
 }

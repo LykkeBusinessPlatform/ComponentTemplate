@@ -6,44 +6,28 @@ using Common;
 using Common.Log;
 using Lykke.Common;
 using Lykke.Common.Log;
-#if azurequeuesub
-using Lykke.JobTriggers.Triggers;
-#endif
 using Lykke.Sdk;
 
-namespace Lykke.Job.LykkeService.Services
+namespace Lykke.Service.LykkeService.Services
 {
     public class ShutdownManager : IShutdownManager
     {
         private readonly IEnumerable<IStartStop> _stoppables;
         private readonly IEnumerable<IStopable> _items;
         private readonly ILog _log;
-#if azurequeuesub
-        private readonly TriggerHost _triggerHost;
-#endif
 
         public ShutdownManager(
             IEnumerable<IStartStop> stoppables,
             IEnumerable<IStopable> items,
-#if azurequeuesub
-            TriggerHost triggerHost,
-#endif
             ILogFactory logFactory)
         {
             _stoppables = stoppables;
             _items = items;
-#if azurequeuesub
-            _triggerHost = triggerHost;
-#endif
             _log = logFactory.CreateLog(this);
         }
 
         public async Task StopAsync()
         {
-#if azurequeuesub
-
-            _triggerHost.Cancel();
-#endif
             try
             {
                 await Task.WhenAll(_stoppables.Select(i => Task.Run(() => i.Stop())));

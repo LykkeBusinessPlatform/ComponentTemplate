@@ -6,9 +6,4 @@
   <ItemGroup>
     <PackageReference Include="Lykke.Common" Version="7.5.0" />
   </ItemGroup>
-  <!--#if (rabbitpub) -->
-  <ItemGroup>
-    <ProjectReference Include="..\..\contract\Lykke.Job.LykkeService.Contract\Lykke.Job.LykkeService.Contract.csproj" />
-  </ItemGroup>
-  <!--#endif -->
 </Project>

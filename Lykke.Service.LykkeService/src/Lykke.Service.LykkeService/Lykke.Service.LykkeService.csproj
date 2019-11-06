@@ -23,6 +23,7 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\client\Lykke.Service.LykkeService.Client\Lykke.Service.LykkeService.Client.csproj" />
     <ProjectReference Include="..\Lykke.LykkeType.LykkeService.AzureRepositories\Lykke.LykkeType.LykkeService.AzureRepositories.csproj" />
     <ProjectReference Include="..\Lykke.LykkeType.LykkeService.DomainServices\Lykke.LykkeType.LykkeService.DomainServices.csproj" />
   </ItemGroup>

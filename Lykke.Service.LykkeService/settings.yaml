@@ -23,14 +23,20 @@ LykkeServiceJob:
 ##endif
 ##if (rabbitsub || rabbitpub)
   Rabbit:
-    ConnectionString:
-      settings-key: ConnectionString
-      types:
-        - RabbitMq
+##endif
+##if (rabbitpub)
+    Publishers:
+      ConnectionString:
+        settings-key: Pub-ConnectionString
+        types:
+          - RabbitMq
 ##endif
 ##if (rabbitsub)
-    ExchangeName:
-      settings-key: ExchangeName
+    Subscribers:
+      ConnectionString:
+        settings-key: Sub-ConnectionString
+        types:
+          - RabbitMq
 ##endif
 SlackNotifications:
     AzureQueue:
