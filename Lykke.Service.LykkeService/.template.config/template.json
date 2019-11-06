@@ -154,9 +154,21 @@
           ]
         },
         {
-          "condition": "(!(rabbitsub || rabbitpub))",
+          "condition": "(serviceType == 'Job' && !(rabbitsub || rabbitpub))",
           "exclude": [ 
               "src/Lykke.Job.LykkeService/Settings/JobSettings/RabbitMqSettings.cs"
+          ]
+        },
+        {
+          "condition": "(serviceType == 'Job' && !rabbitpub)",
+          "exclude": [ 
+              "contract/Lykke.Job.LykkeService.Contract/**/*"
+          ]
+        },
+        {
+          "condition": "(serviceType == 'Service' && !rabbitpub)",
+          "exclude": [ 
+              "contract/Lykke.Service.LykkeService.Contract/**/*"
           ]
         },
         {

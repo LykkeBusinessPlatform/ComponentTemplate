@@ -20,12 +20,12 @@ dotnet new lkebizservice -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az 
 
 to generate solution with only the job projects:
 ```sh
-dotnet new lkebizservice -n ${JobName} -o Lykke.Job.${JobName} -type Job [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
+dotnet new lkebizservice -type Job -n ${JobName} -o Lykke.Job.${JobName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
 ```
 
 to generate solution with service and job projects:
 ```sh
-dotnet new lkebizservice -n ${ServiceName} -o Lykke.Service.${ServiceName} -type ServiceJob [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
+dotnet new lkebizservice -type ServiceJob -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
 ```
 
 This will create a solution in the current folder, where `${ServiceName}` or `${JobName}` is the service/job name without Lykke.Service./Lykke.Job. prefix. Switches:
