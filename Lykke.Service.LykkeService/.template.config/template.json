@@ -1,0 +1,218 @@
+{
+  "author": "Lykke",
+  "classifications": ["LykkeService"],
+  "name": "LykkeBizService",
+  "identity": "LykkeBizService",
+  "shortName": "lkebizservice",
+  "preferNameDirectory" : "true",
+  "tags": {
+    "language": "C#"
+  },
+  "sourceName": "LykkeService",
+  "symbols": {
+    "serviceType": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "Service",
+      "choices": [
+        {
+          "choice": "Service",
+          "description": "Will contain only service related projects (service, service contracts, client)"
+        },
+        {
+          "choice": "ServiceJob",
+          "description": "Will contain all projects (service, client, job, contracts)"
+        },
+        {
+          "choice": "Job",
+          "description":"Will contain only job related projects (no service and client projects)"
+        }
+      ]
+    },
+    "azurequeuesub":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "false",
+      "description": "Enables incoming Azure Queue messages processing"
+    },
+    "rabbitsub":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "false",
+      "description": "Enables incoming RabbitMQ messages processing"
+    },
+    "rabbitpub":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "false",
+      "description": "Enables outcoming RabbitMQ messages sending"
+    },
+    "timeperiod":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "false",
+      "description": "Enables periodical work execution"
+    },
+    "ifdef": {
+      "type": "generated",
+      "generator": "constant",
+      "parameters": {
+        "value":"#"
+      },
+      "replaces":"//#$"
+    },
+    "ifdefUncomment": {
+      "type": "generated",
+      "generator": "constant",
+      "parameters": {
+        "value":""
+      },
+      "replaces":"//$#$//"
+    },
+    "renameTestSolutionFolder": {
+      "type": "generated",
+      "generator": "switch",
+      "dataType": "string",
+      "replaces": "5. Tests",
+      "parameters": {
+        "cases": [
+          {
+            "condition": "(serviceType == 'Job')",
+            "value": "4. Tests"
+          },
+          {
+            "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
+            "value": "5. Tests"
+          }
+        ]
+      }
+    },
+    "renameHostsSolutionFolder": {
+      "type": "generated",
+      "generator": "switch",
+      "dataType": "string",
+      "replaces": "6. Hosts",
+      "parameters": {
+        "cases": [
+          {
+            "condition": "(serviceType == 'Job')",
+            "value": "5. Hosts"
+          },
+          {
+            "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
+            "value": "6. Hosts"
+          }
+        ]
+      }
+    },
+    "renameProjectType": {
+      "type": "generated",
+      "generator": "switch",
+      "dataType": "string",
+      "replaces": "LykkeType",
+      "parameters": {
+        "cases": [
+          {
+            "condition": "(serviceType == 'Job')",
+            "value": "Job"
+          },
+          {
+            "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
+            "value": "Service"
+          }
+        ]
+      }
+    }
+  },
+  "SpecialCustomOperations": {
+    "*.yaml" : {
+      "Operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "style": "line",
+            "token": "#"
+          }
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(!azurequeuesub)",
+          "exclude": [ 
+            "src/Lykke.Job.LykkeService/Settings/JobSettings/AzureQueueSettings.cs",
+            "src/Lykke.Job.LykkeService/AzureQueueHandlers/*.*"
+          ]
+        },
+        {
+          "condition": "(!(rabbitsub || azurequeuesub))",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeService/IncomingMessages/*.*"
+          ]
+        },
+        {
+          "condition": "(!(rabbitsub || rabbitpub))",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeService/Settings/JobSettings/RabbitMqSettings.cs"
+          ]
+        },
+        {
+          "condition": "(!rabbitsub)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeService/RabbitSubscribers/*.*"
+          ]
+        },
+        {
+          "condition": "(!rabbitpub)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeService/RabbitPublishers/*.*",
+              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs"
+          ]
+        },
+        {
+          "condition": "(!timeperiod)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeService/PeriodicalHandlers/*.*"
+          ]
+        },
+        {
+          "condition": "(serviceType == 'Job')",
+          "exclude": [ 
+              "client/Lykke.Service.LykkeService.Client/**/*",
+              "contract/Lykke.Service.LykkeService.Contract/**/*",
+              "src/Lykke.Service.LykkeService/**/*",
+              "tests/Lykke.LykkeType.LykkeService.Tests/ClientHttpPathsAreMatchedInControllersTest.cs",
+              "tests/Lykke.LykkeType.LykkeService.Tests/SensitiveDataTests.cs",
+              "tests/Lykke.LykkeType.LykkeService.Tests/AutoMapperProfileTests.cs"
+          ]
+        },
+        {
+          "condition": "(serviceType == 'Service')",
+          "exclude": [ 
+              "src/Lykke.LykkeType.LykkeService.Domain/Services/IMyRabbitPublisher.cs",
+              "contract/Lykke.Job.LykkeService.Contract/**/*",
+              "src/Lykke.Job.LykkeService/**/*"
+          ]
+        },
+        {
+          "condition": "(serviceType == 'Service' || serviceType == 'ServiceJob')",
+          "rename": { "LykkeType": "Service"}
+        },
+        {
+          "condition": "(serviceType == 'Job')",
+          "rename": { "LykkeType": "Job"}
+        },
+        {
+          "exclude": [
+            "README.md",
+            "src/Lykke.Service.LykkeService/Readme.md",
+            "src/Lykke.Job.LykkeService/Readme.md"
+          ]
+        }
+      ]
+    }
+  ]
+}

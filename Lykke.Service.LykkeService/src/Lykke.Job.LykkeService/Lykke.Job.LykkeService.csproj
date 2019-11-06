@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <!--#if (azurequeuesub) -->
+    <PackageReference Include="Lykke.JobTriggers" Version="2.2.0" />
+    <!--#endif -->
+    <!--#if (rabbitpub) -->
+    <PackageReference Include="Lykke.RabbitMq.Azure" Version="5.2.0" />
+    <!--#endif -->
+    <!--#if (rabbitpub || rabbitsub) -->
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.12.0" />
+    <!--#endif -->
+    <PackageReference Include="Lykke.Sdk" Version="5.14.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lykke.LykkeType.LykkeService.AzureRepositories\Lykke.LykkeType.LykkeService.AzureRepositories.csproj" />
+    <ProjectReference Include="..\Lykke.LykkeType.LykkeService.DomainServices\Lykke.LykkeType.LykkeService.DomainServices.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers" />
+  </ItemGroup>
+</Project>
