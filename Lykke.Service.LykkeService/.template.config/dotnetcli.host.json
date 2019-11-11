@@ -19,6 +19,14 @@
     "serviceType": {
       "longName": "type",
       "shortName": "type"
+    },
+    "aztrepos": {
+      "longName": "aztrepos",
+      "shortName": "atdb"
+    },
+    "mssqlrepos": {
+      "longName": "mssqlrepos",
+      "shortName": "msdb"
     }
   }
 }

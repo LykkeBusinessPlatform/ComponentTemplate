@@ -53,6 +53,18 @@
       "defaultValue": "false",
       "description": "Enables periodical work execution"
     },
+    "aztrepos":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "false",
+      "description": "Enables azure tables repositories"
+    },
+    "mssqlrepos":{
+      "type": "parameter",
+      "dataType":"bool",
+      "defaultValue": "false",
+      "description": "Enables ms-sql repositories"
+    },
     "ifdef": {
       "type": "generated",
       "generator": "constant",
@@ -148,27 +160,27 @@
           ]
         },
         {
-          "condition": "(serviceType == 'Job' && !(rabbitsub || rabbitpub))",
+          "condition": "(serviceType != 'Service' && !(rabbitsub || rabbitpub))",
           "exclude": [ 
               "src/Lykke.Job.LykkeService/Settings/JobSettings/RabbitMqSettings.cs",
               "src/Lykke.Job.LykkeService/Modules/RabbitMqModule.cs"
           ]
         },
         {
-          "condition": "(serviceType == 'Job' && !rabbitpub)",
+          "condition": "(serviceType != 'Service' && !rabbitpub)",
           "exclude": [ 
               "contract/Lykke.Job.LykkeService.Contract/**/*"
           ]
         },
         {
-          "condition": "(serviceType == 'Service' && !(rabbitsub || rabbitpub))",
+          "condition": "(serviceType != 'Job' && !(rabbitsub || rabbitpub))",
           "exclude": [ 
               "src/Lykke.Service.LykkeService/Settings/RabbitMqSettings.cs",
               "src/Lykke.Service.LykkeService/Modules/RabbitMqModule.cs"
           ]
         },
         {
-          "condition": "(serviceType == 'Service' && !rabbitpub)",
+          "condition": "(serviceType != 'Job' && !rabbitpub)",
           "exclude": [ 
               "contract/Lykke.Service.LykkeService.Contract/**/*"
           ]
@@ -201,6 +213,36 @@
           "exclude": [ 
               "contract/Lykke.Job.LykkeService.Contract/**/*",
               "src/Lykke.Job.LykkeService/**/*"
+          ]
+        },
+        {
+          "condition": "(!aztrepos)",
+          "exclude": [ 
+              "src/Lykke.LykkeType.LykkeService.AzureRepositories/**/*"
+          ]
+        },
+        {
+          "condition": "(!mssqlrepos)",
+          "exclude": [ 
+              "src/Lykke.LykkeType.LykkeService.MsSqlRepositories/**/*"
+          ]
+        },
+        {
+          "condition": "(!aztrepos && !mssqlrepos)",
+          "exclude": [ 
+              "src/Lykke.LykkeType.LykkeService.Domain/Repositories/**/*"
+          ]
+        },
+        {
+          "condition": "(serviceType != 'Job' && !aztrepos && !mssqlrepos)",
+          "exclude": [ 
+              "src/Lykke.Service.LykkeService/Modules/DbModule.cs"
+          ]
+        },
+        {
+          "condition": "(serviceType != 'Service' && !aztrepos && !mssqlrepos)",
+          "exclude": [ 
+              "src/Lykke.Job.LykkeService/Modules/DbModule.cs"
           ]
         },
         {

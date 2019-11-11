@@ -26,8 +26,13 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
   </ItemGroup>
   <ItemGroup>
+    <!--#if (aztrepos) -->
     <ProjectReference Include="..\Lykke.LykkeType.LykkeService.AzureRepositories\Lykke.LykkeType.LykkeService.AzureRepositories.csproj" />
+    <!--#endif -->
     <ProjectReference Include="..\Lykke.LykkeType.LykkeService.DomainServices\Lykke.LykkeType.LykkeService.DomainServices.csproj" />
+    <!--#if (mssqlrepos) -->
+    <ProjectReference Include="..\Lykke.LykkeType.LykkeService.MsSqlRepositories\Lykke.LykkeType.LykkeService.MsSqlRepositories.csproj" />
+    <!--#endif -->
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers" />

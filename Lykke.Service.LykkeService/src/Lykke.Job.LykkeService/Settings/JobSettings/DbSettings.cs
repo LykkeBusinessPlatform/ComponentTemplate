@@ -6,5 +6,15 @@ namespace Lykke.Job.LykkeService.Settings.JobSettings
     {
         [AzureTableCheck]
         public string LogsConnString { get; set; }
+#if (aztrepos)
+
+        [AzureTableCheck]
+        public string AzureDbConnString { get; set; }
+#endif
+#if (mssqlrepos)
+
+        [SqlCheck]
+        public string SqlDbConnString { get; set; }
+#endif
     }
 }

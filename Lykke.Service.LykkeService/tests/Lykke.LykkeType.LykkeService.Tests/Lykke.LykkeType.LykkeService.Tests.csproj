@@ -11,7 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <!--#if (serviceType != "Job") -->
-    <ProjectReference Include="..\..\client\Lykke.Service.LykkeService.Client\Lykke.Service.LykkeService.Client.csproj" />
     <ProjectReference Include="..\..\src\Lykke.Service.LykkeService\Lykke.Service.LykkeService.csproj" />
     <!--#endif -->
     <ProjectReference Include="..\..\src\Lykke.LykkeType.LykkeService.DomainServices\Lykke.LykkeType.LykkeService.DomainServices.csproj" />

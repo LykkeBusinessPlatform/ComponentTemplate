@@ -15,17 +15,17 @@ where `${path}` is the **full** path to the clonned directory (where folder .tem
 Now new template can be used in dotnet cli:
 to generate new service:
 ```sh
-dotnet new lkebizservice -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}]  
+dotnet new lkebizservice -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false} -atdb {true|false} -msdb {true|false}]
 ```
 
 to generate solution with only the job projects:
 ```sh
-dotnet new lkebizservice -type Job -n ${JobName} -o Lykke.Job.${JobName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
+dotnet new lkebizservice -type Job -n ${JobName} -o Lykke.Job.${JobName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false} -atdb {true|false} -msdb {true|false}]
 ```
 
 to generate solution with service and job projects:
 ```sh
-dotnet new lkebizservice -type ServiceJob -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false}] 
+dotnet new lkebizservice -type ServiceJob -n ${ServiceName} -o Lykke.Service.${ServiceName} [-az {true|false} -rpub {true|false} -rsub {true|false} -t {true|false} -atdb {true|false} -msdb {true|false}]
 ```
 
 This will create a solution in the current folder, where `${ServiceName}` or `${JobName}` is the service/job name without Lykke.Service./Lykke.Job. prefix. Switches:
@@ -41,6 +41,8 @@ Default is **Service**
 -   **-rsub|--rabbitsub**: Enables incoming RabbitMQ messages processing. Default is  **false**
 -   **-rpub|--rabbitpub**: Enables outcoming RabbitMQ messages sending. Default is  **false**
 -   **-t|--timeperiod**: Enables periodical work execution, using TimerPeriod class from Lykke.Common package. Default is  **false**
+-   **-atdb|--aztrepos**: Enables azure tables repositories project. Default is  **false**
+-   **-msdb|--mssqlrepos**: Enables MsSql repositories project. Default is  **false**
 
 When temlate has changed, to update installed template run again command:
 

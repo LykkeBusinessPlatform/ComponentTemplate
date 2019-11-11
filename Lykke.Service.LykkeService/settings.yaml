@@ -1,10 +1,20 @@
 ##if (serviceType != 'Job')
 LykkeServiceService:
-    Db:
-        LogsConnString:
-            settings-key: LykkeServiceService-LogsConnString
-            types:
-              - AzureTableStorage
+  Db:
+    LogsConnString:
+      settings-key: LykkeServiceService-LogsConnString
+      types:
+        - AzureTableStorage
+##endif
+##if (serviceType != 'Job' && aztrepos)
+    AzureDbConnString:
+      settings-key: LykkeServiceService-AzureDbConnString
+      types:
+        - AzureTableStorage
+##endif
+##if (serviceType != 'Job' && mssqlrepos)
+    SqlDbConnString:
+      settings-key: LykkeServiceService-SqlDbConnString
 ##endif
 ##if (serviceType != 'Service')
 LykkeServiceJob:
@@ -13,6 +23,16 @@ LykkeServiceJob:
       settings-key: LykkeServiceJob-LogsConnString
       types:
         - AzureTableStorage
+##endif
+##if (serviceType != 'Service' && aztrepos)
+    AzureDbConnString:
+      settings-key: LykkeServiceJob-AzureDbConnString
+      types:
+        - AzureTableStorage
+##endif
+##if (serviceType != 'Service' && mssqlrepos)
+    SqlDbConnString:
+      settings-key: LykkeServiceJob-SqlDbConnString
 ##endif
 ##if (azurequeuesub)
   AzureQueue:

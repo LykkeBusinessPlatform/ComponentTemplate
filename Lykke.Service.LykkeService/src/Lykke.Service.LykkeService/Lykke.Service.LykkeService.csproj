@@ -24,8 +24,13 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\client\Lykke.Service.LykkeService.Client\Lykke.Service.LykkeService.Client.csproj" />
+    <!--#if (aztrepos) -->
     <ProjectReference Include="..\Lykke.LykkeType.LykkeService.AzureRepositories\Lykke.LykkeType.LykkeService.AzureRepositories.csproj" />
+    <!--#endif -->
     <ProjectReference Include="..\Lykke.LykkeType.LykkeService.DomainServices\Lykke.LykkeType.LykkeService.DomainServices.csproj" />
+    <!--#if (mssqlrepos) -->
+    <ProjectReference Include="..\Lykke.LykkeType.LykkeService.MsSqlRepositories\Lykke.LykkeType.LykkeService.MsSqlRepositories.csproj" />
+    <!--#endif -->
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />

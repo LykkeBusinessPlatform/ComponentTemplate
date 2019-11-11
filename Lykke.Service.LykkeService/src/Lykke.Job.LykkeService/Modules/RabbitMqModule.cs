@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using Lykke.Job.LykkeService.Contract;
 #endif
 #if rabbitsub
-using Lykke.Job.LykkeService.DomainServices.RabbitSubscribers;
+using Lykke.LykkeType.LykkeService.DomainServices.RabbitSubscribers;
 #endif
 using Lykke.Job.LykkeService.Settings;
 using Lykke.Job.LykkeService.Settings.JobSettings;
@@ -21,6 +21,13 @@ namespace Lykke.Job.LykkeService.Modules
     [UsedImplicitly]
     public class RabbitMqModule : Module
     {
+#if rabbitpub
+        private const string PubExchangeName = "REPLACE THIS WITH PROPER EXCHANGE NAME"; // TODO pass proper exchange name
+#endif
+#if rabbitsub
+        private const string SubExchangeName = "REPLACE THIS WITH PROPER EXCHANGE NAME"; // TODO pass proper exchange name
+#endif
+
         private readonly RabbitMqSettings _settings;
 
         public RabbitMqModule(IReloadingManager<AppSettings> settingsManager)
@@ -31,25 +38,15 @@ namespace Lykke.Job.LykkeService.Modules
         protected override void Load(ContainerBuilder builder)
         {
             // NOTE: Do not register entire settings in container, pass necessary settings to services which requires them
-#if rabbitsub
-
-            RegisterRabbitMqSubscribers(builder);
-#endif
 #if rabbitpub
 
             RegisterRabbitMqPublishers(builder);
 #endif
-        }
 #if rabbitsub
 
-        private void RegisterRabbitMqSubscribers(ContainerBuilder builder)
-        {
-            builder.RegisterJsonRabbitSubscriber<RabbitSubscriber, object>( // TODO replace object with proper message type
-                _settings.Subscribers.ConnectionString,
-                "REPLACE THIS WITH PROPER EXCHANGE NAME",  // TODO pass proper exchange name
-                nameof(LykkeService).ToLower()); // this could be changed if needed
-        }
+            RegisterRabbitMqSubscribers(builder);
 #endif
+        }
 #if rabbitpub
 
         // registered publishers could be esolved by IRabbitPublisher<TMessage> interface
@@ -57,7 +54,17 @@ namespace Lykke.Job.LykkeService.Modules
         {
             builder.RegisterJsonRabbitPublisher<MyPublishedMessage>(
                 _settings.Publishers.ConnectionString,
-                "REPLACE THIS WITH PROPER EXCHANGE NAME"); // TODO pass proper exchange name
+                PubExchangeName);
+        }
+#endif
+#if rabbitsub
+
+        private void RegisterRabbitMqSubscribers(ContainerBuilder builder)
+        {
+            builder.RegisterJsonRabbitSubscriber<RabbitSubscriber, object>( // TODO replace object with proper message type
+                _settings.Subscribers.ConnectionString,
+                SubExchangeName,
+                nameof(LykkeService).ToLower()); // this could be changed if needed
         }
 #endif
     }
