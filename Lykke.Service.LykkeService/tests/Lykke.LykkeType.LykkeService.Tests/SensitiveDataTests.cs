@@ -31,7 +31,8 @@ namespace Lykke.LykkeType.LykkeService.Tests
 
             foreach (var apiInterface in apiInterfaces)
             {
-                var interfaceMethods = apiInterface.GetMethods();
+                var interfaceMethods = apiInterface.GetMethods(
+                    BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
                 foreach (var apiMethod in interfaceMethods)
                 {
