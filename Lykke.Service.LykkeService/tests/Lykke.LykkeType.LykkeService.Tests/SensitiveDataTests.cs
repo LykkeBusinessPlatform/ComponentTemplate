@@ -17,7 +17,7 @@ namespace Lykke.LykkeType.LykkeService.Tests
         };
 
         [Fact]
-        public void CheckRoutesInControllersTest()
+        public void CheckSensitiveParamsTest()
         {
             var clientInterface = typeof(ILykkeServiceClient);
 
