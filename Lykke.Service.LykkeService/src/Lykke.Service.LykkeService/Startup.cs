@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 using AutoMapper;
 using JetBrains.Annotations;
 using Lykke.Logs.Loggers.LykkeSlack;
@@ -6,8 +7,11 @@ using Lykke.Sdk;
 using Lykke.Sdk.Health;
 using Lykke.Sdk.Middleware;
 using Lykke.Service.LykkeService.Settings;
+using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +20,9 @@ namespace Lykke.Service.LykkeService
     [UsedImplicitly]
     public class Startup
     {
+        private IConfigurationRoot _configurationRoot;
+        private IReloadingManager<AppSettings> _settingsManager;
+
         private readonly LykkeSwaggerOptions _swaggerOptions = new LykkeSwaggerOptions
         {
             ApiTitle = "LykkeService API",
@@ -23,9 +30,9 @@ namespace Lykke.Service.LykkeService
         };
 
         [UsedImplicitly]
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            return services.BuildServiceProvider<AppSettings>(options =>
+            (_configurationRoot, _settingsManager) = services.BuildServiceProvider<AppSettings>(options =>
             {
                 options.SwaggerOptions = _swaggerOptions;
 
@@ -69,11 +76,22 @@ namespace Lykke.Service.LykkeService
         }
 
         [UsedImplicitly]
-        public void Configure(IApplicationBuilder app, IMapper mapper)
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.ConfigureLykkeContainer(
+                _configurationRoot,
+                _settingsManager);
+        }
+
+        [UsedImplicitly]
+        public void Configure(
+            IApplicationBuilder app,
+            IMapper mapper,
+            IApplicationLifetime appLifetime)
         {
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-            app.UseLykkeConfiguration(options =>
+            app.UseLykkeConfiguration(appLifetime, options =>
             {
                 options.SwaggerOptions = _swaggerOptions;
 

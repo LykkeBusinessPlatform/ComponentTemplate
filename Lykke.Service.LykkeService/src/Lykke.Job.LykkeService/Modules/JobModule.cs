@@ -1,4 +1,10 @@
 ﻿using Autofac;
+#if azurequeuesub
+using Autofac.Extensions.DependencyInjection;
+#endif
+#if timeperiod
+using Common;
+#endif
 using JetBrains.Annotations;
 using Lykke.Job.LykkeService.Services;
 using Lykke.Job.LykkeService.Settings;

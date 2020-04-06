@@ -1,15 +1,21 @@
-﻿using JetBrains.Annotations;
+﻿using Autofac;
+using JetBrains.Annotations;
 using Lykke.Job.LykkeService.Settings;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using Lykke.Sdk;
+using Lykke.SettingsReader;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Job.LykkeService
 {
     [UsedImplicitly]
     public class Startup
     {
+        private IConfigurationRoot _configurationRoot;
+        private IReloadingManager<AppSettings> _settingsManager;
+
         private readonly LykkeSwaggerOptions _swaggerOptions = new LykkeSwaggerOptions
         {
             ApiTitle = "LykkeServiceJob API",
@@ -17,9 +23,9 @@ namespace Lykke.Job.LykkeService
         };
 
         [UsedImplicitly]
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            return services.BuildServiceProvider<AppSettings>(options =>
+            (_configurationRoot, _settingsManager) = services.BuildServiceProvider<AppSettings>(options =>
             {
                 options.SwaggerOptions = _swaggerOptions;
 
@@ -63,9 +69,17 @@ namespace Lykke.Job.LykkeService
         }
 
         [UsedImplicitly]
-        public void Configure(IApplicationBuilder app)
+        public void ConfigureContainer(ContainerBuilder builder)
         {
-            app.UseLykkeConfiguration(options =>
+            builder.ConfigureLykkeContainer(
+                _configurationRoot,
+                _settingsManager);
+        }
+
+        [UsedImplicitly]
+        public void Configure(IApplicationBuilder app, IApplicationLifetime appLifetime)
+        {
+            app.UseLykkeConfiguration(appLifetime, options =>
             {
                 options.SwaggerOptions = _swaggerOptions;
 
