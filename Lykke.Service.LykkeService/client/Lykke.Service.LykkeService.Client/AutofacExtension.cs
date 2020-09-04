@@ -30,7 +30,7 @@ namespace Lykke.Service.LykkeService.Client
             if (string.IsNullOrWhiteSpace(settings.ServiceUrl))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(LykkeServiceServiceClientSettings.ServiceUrl));
 
-            var clientBuilder = HttpClientGenerator.BuildForUrl(settings.ServiceUrl)
+            var clientBuilder = HttpClientGenerator.HttpClientGenerator.BuildForUrl(settings.ServiceUrl)
                 .WithAdditionalCallsWrapper(new ExceptionHandlerCallsWrapper());
 
             clientBuilder = builderConfigure?.Invoke(clientBuilder) ?? clientBuilder.WithoutRetries();

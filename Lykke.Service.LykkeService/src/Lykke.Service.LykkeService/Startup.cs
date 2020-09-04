@@ -2,18 +2,15 @@
 using Autofac;
 using AutoMapper;
 using JetBrains.Annotations;
-using Lykke.Logs.Loggers.LykkeSlack;
 using Lykke.Sdk;
 using Lykke.Sdk.Health;
 using Lykke.Sdk.Middleware;
 using Lykke.Service.LykkeService.Settings;
 using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace Lykke.Service.LykkeService
 {
@@ -38,20 +35,15 @@ namespace Lykke.Service.LykkeService
 
                 options.Logs = logs =>
                 {
-                    logs.AzureTableName = "LykkeServiceLog";
-                    logs.AzureTableConnectionStringResolver = settings => settings.LykkeServiceService.Db.LogsConnString;
-
-                    // TODO: You could add extended logging configuration here:
-                    /* 
-                    logs.Extended = extendedLogs =>
-                    {
-                        // For example, you could add additional slack channel like this:
-                        extendedLogs.AddAdditionalSlackChannel("LykkeService", channelOptions =>
-                        {
-                            channelOptions.MinLogLevel = LogLevel.Information;
-                        });
-                    };
+                    // Configure logging from settings or a file
+                    /*
+                    logs.UseConfiguration = true;
+                    // Can override logging configuration from settings with configuration from file
+                    logs.ConfigurationFile = "appsettings.Serilog.json"; 
                     */
+
+                    logs.AzureTableConnectionStringResolver = settings => settings.LykkeServiceService.Db.LogsConnString;
+                    logs.LogsTableName = "LykkeServiceLog";
                 };
 
                 options.Extend = (sc, settings) =>
@@ -87,7 +79,7 @@ namespace Lykke.Service.LykkeService
         public void Configure(
             IApplicationBuilder app,
             IMapper mapper,
-            IApplicationLifetime appLifetime)
+            IHostApplicationLifetime appLifetime)
         {
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
 

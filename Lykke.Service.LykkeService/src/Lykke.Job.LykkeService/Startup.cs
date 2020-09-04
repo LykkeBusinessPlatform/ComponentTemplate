@@ -4,9 +4,9 @@ using Lykke.Job.LykkeService.Settings;
 using Lykke.Sdk;
 using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Lykke.Job.LykkeService
 {
@@ -31,20 +31,16 @@ namespace Lykke.Job.LykkeService
 
                 options.Logs = logs =>
                 {
-                    logs.AzureTableName = "LykkeServiceJobLog";
-                    logs.AzureTableConnectionStringResolver = settings => settings.LykkeServiceJob.Db.LogsConnString;
-
-                    // TODO: You could add extended logging configuration here:
-                    /* 
-                    logs.Extended = extendedLogs =>
-                    {
-                        // For example, you could add additional slack channel like this:
-                        extendedLogs.AddAdditionalSlackChannel("LykkeService", channelOptions =>
-                        {
-                            channelOptions.MinLogLevel = LogLevel.Information;
-                        });
-                    };
+                    // Configure logging from settings or a file
+                    /*
+                    logs.UseConfiguration = true;
+                    // Can override logging configuration from settings with configuration from file
+                    logs.ConfigurationFile = "appsettings.Serilog.json"; 
                     */
+
+                    // Confiure logging to push log data to azure table
+                    logs.AzureTableConnectionStringResolver = settings => settings.LykkeServiceJob.Db.LogsConnString;
+                    logs.LogsTableName = "LykkeServiceJobLog";
                 };
 
                 // TODO: Extend the service configuration
@@ -77,7 +73,7 @@ namespace Lykke.Job.LykkeService
         }
 
         [UsedImplicitly]
-        public void Configure(IApplicationBuilder app, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IHostApplicationLifetime appLifetime)
         {
             app.UseLykkeConfiguration(appLifetime, options =>
             {

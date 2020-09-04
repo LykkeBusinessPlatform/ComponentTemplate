@@ -23,8 +23,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="LykkeBiz.Sdk" Version="1.0.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
+    <PackageReference Include="LykkeBiz.Sdk" Version="7.2.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\client\Lykke.Service.LykkeService.Client\Lykke.Service.LykkeService.Client.csproj" />
