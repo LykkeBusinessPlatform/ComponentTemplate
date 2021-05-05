@@ -21,7 +21,7 @@ namespace Lykke.Service.LykkeService.Client
         public static void RegisterLykkeServiceClient(
             [NotNull] this ContainerBuilder builder,
             [NotNull] LykkeServiceServiceClientSettings settings,
-            [CanBeNull] Func<HttpClientGeneratorBuilder, HttpClientGeneratorBuilder> builderConfigure)
+            [CanBeNull] Func<HttpClientGeneratorBuilder, HttpClientGeneratorBuilder> builderConfigure = null)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));

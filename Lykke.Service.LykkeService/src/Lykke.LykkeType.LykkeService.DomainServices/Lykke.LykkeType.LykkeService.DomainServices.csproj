@@ -4,9 +4,9 @@
     <Version>1.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <!--#if (rabbitpub || rabbitsub) -->
-    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.13.1" />
+    <PackageReference Include="Lykke.RabbitMqBroker" Version="7.14.1" />
     <!--#endif -->
   </ItemGroup>
   <ItemGroup>

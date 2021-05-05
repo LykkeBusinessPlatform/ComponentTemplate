@@ -6,7 +6,6 @@ using Autofac.Extensions.DependencyInjection;
 using Common;
 #endif
 using JetBrains.Annotations;
-using Lykke.Job.LykkeService.Services;
 using Lykke.Job.LykkeService.Settings;
 using Lykke.Sdk;
 using Lykke.Sdk.Health;
@@ -41,11 +40,8 @@ namespace Lykke.Job.LykkeService.Modules
                 .As<IHealthService>()
                 .SingleInstance();
 
-            builder.RegisterType<StartupManager>()
+            builder.RegisterType<StartStopManager>()
                 .As<IStartupManager>()
-                .SingleInstance();
-
-            builder.RegisterType<ShutdownManager>()
                 .As<IShutdownManager>()
                 .AutoActivate()
                 .SingleInstance();

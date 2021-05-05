@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using Lykke.Sdk;
 using Lykke.Sdk.Health;
-using Lykke.Service.LykkeService.Services;
 using Lykke.Service.LykkeService.Settings;
 using Lykke.SettingsReader;
 
@@ -26,11 +25,8 @@ namespace Lykke.Service.LykkeService.Modules
                 .As<IHealthService>()
                 .SingleInstance();
 
-            builder.RegisterType<StartupManager>()
+            builder.RegisterType<StartStopManager>()
                 .As<IStartupManager>()
-                .SingleInstance();
-
-            builder.RegisterType<ShutdownManager>()
                 .As<IShutdownManager>()
                 .AutoActivate()
                 .SingleInstance();
